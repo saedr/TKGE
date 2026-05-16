@@ -36,7 +36,14 @@ def main():
 
     with timer.timeit("perturbation"):
         train_cond, perturb_meta = perturb_training(
-            ds["train"], condition, cfg["perturbation"]["budget"], ds["orig_degree"], cfg["perturbation"]["smoothing_c"], cfg["seed"]
+            ds["train"],
+            condition,
+            cfg["perturbation"]["budget"],
+            ds["orig_degree"],
+            cfg["perturbation"]["smoothing_c"],
+            cfg["seed"],
+            valid_triples=ds["valid"],
+            test_triples=ds["test"],
         )
 
     model = DistMult(ds["num_entities"], ds["num_relations"], cfg["model"]["embedding_dim"])
