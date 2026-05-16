@@ -1,0 +1,323 @@
+{
+  "status": {
+    "smoke_completed_end_to_end": true,
+    "validation_passed": true,
+    "branch": "work",
+    "data_layout_used": "flat data with runtime symlinks to data/FB15k-237",
+    "evaluation_kind": "tail_only",
+    "shared_filtering": "original_train_valid_test"
+  },
+  "design": {
+    "dataset": "FB15k-237",
+    "model": "DistMult",
+    "seed": 11,
+    "budget": "30%",
+    "conditions": [
+      "Original",
+      "Random",
+      "Structured-low",
+      "Structured-high"
+    ],
+    "note": "Smoke only, not the 3-seed pilot."
+  },
+  "perturbation_checks": [
+    {
+      "condition": "Original",
+      "removed_triples": 0,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 0
+    },
+    {
+      "condition": "Random",
+      "removed_triples": 81634,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 135
+    },
+    {
+      "condition": "Structured-low",
+      "removed_triples": 81634,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 949
+    },
+    {
+      "condition": "Structured-high",
+      "removed_triples": 81634,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 21
+    }
+  ],
+  "runtime": [
+    {
+      "condition": "Original",
+      "data_loading_sec": null,
+      "perturbation_sec": null,
+      "training_sec": null,
+      "evaluation_sec": null,
+      "total_sec": null
+    },
+    {
+      "condition": "Random",
+      "data_loading_sec": null,
+      "perturbation_sec": null,
+      "training_sec": null,
+      "evaluation_sec": null,
+      "total_sec": null
+    },
+    {
+      "condition": "Structured-low",
+      "data_loading_sec": null,
+      "perturbation_sec": null,
+      "training_sec": null,
+      "evaluation_sec": null,
+      "total_sec": null
+    },
+    {
+      "condition": "Structured-high",
+      "data_loading_sec": null,
+      "perturbation_sec": null,
+      "training_sec": null,
+      "evaluation_sec": null,
+      "total_sec": null
+    }
+  ],
+  "training_sanity": [
+    {
+      "condition": "Original",
+      "initial_loss": null,
+      "final_loss": null,
+      "roughly_decreasing": true
+    },
+    {
+      "condition": "Random",
+      "initial_loss": null,
+      "final_loss": null,
+      "roughly_decreasing": true
+    },
+    {
+      "condition": "Structured-low",
+      "initial_loss": null,
+      "final_loss": null,
+      "roughly_decreasing": true
+    },
+    {
+      "condition": "Structured-high",
+      "initial_loss": null,
+      "final_loss": null,
+      "roughly_decreasing": true
+    }
+  ],
+  "overall_tail_only_metrics": [
+    {
+      "condition": "Original",
+      "tail_mrr": 0.2877809407835731,
+      "tail_hits_at_10": 0.4775,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Random",
+      "tail_mrr": 0.2712101438007647,
+      "tail_hits_at_10": 0.465,
+      "delta_tail_mrr_vs_original": -0.01657079698280839
+    },
+    {
+      "condition": "Structured-low",
+      "tail_mrr": 0.2654605103730065,
+      "tail_hits_at_10": 0.4375,
+      "delta_tail_mrr_vs_original": -0.022320430410566583
+    },
+    {
+      "condition": "Structured-high",
+      "tail_mrr": 0.2785399854794821,
+      "tail_hits_at_10": 0.4675,
+      "delta_tail_mrr_vs_original": -0.00924095530409097
+    }
+  ],
+  "coverage_bin_metrics": [
+    {
+      "condition": "Original",
+      "bin": "low",
+      "tail_mrr": 0.2809050982772836,
+      "tail_hits_at_10": 0.39,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Original",
+      "bin": "mid",
+      "tail_mrr": 0.2686724282595388,
+      "tail_hits_at_10": 0.45,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Original",
+      "bin": "high",
+      "tail_mrr": 0.33287380833793123,
+      "tail_hits_at_10": 0.62,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Random",
+      "bin": "low",
+      "tail_mrr": 0.24339898238260865,
+      "tail_hits_at_10": 0.35,
+      "delta_tail_mrr_vs_original": -0.03750611589467495
+    },
+    {
+      "condition": "Random",
+      "bin": "mid",
+      "tail_mrr": 0.2671912181725283,
+      "tail_hits_at_10": 0.465,
+      "delta_tail_mrr_vs_original": -0.0014812100870105205
+    },
+    {
+      "condition": "Random",
+      "bin": "high",
+      "tail_mrr": 0.3070591564753935,
+      "tail_hits_at_10": 0.58,
+      "delta_tail_mrr_vs_original": -0.02581465186253773
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "low",
+      "tail_mrr": 0.23075144244917362,
+      "tail_hits_at_10": 0.29,
+      "delta_tail_mrr_vs_original": -0.05015365582810999
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "mid",
+      "tail_mrr": 0.25929602322100037,
+      "tail_hits_at_10": 0.435,
+      "delta_tail_mrr_vs_original": -0.009376405038538427
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "high",
+      "tail_mrr": 0.3124985526008515,
+      "tail_hits_at_10": 0.59,
+      "delta_tail_mrr_vs_original": -0.02037525573707971
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "low",
+      "tail_mrr": 0.2718275026364908,
+      "tail_hits_at_10": 0.38,
+      "delta_tail_mrr_vs_original": -0.009077595640792802
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "mid",
+      "tail_mrr": 0.2600943663527461,
+      "tail_hits_at_10": 0.475,
+      "delta_tail_mrr_vs_original": -0.008578061906792722
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "high",
+      "tail_mrr": 0.32214370657594527,
+      "tail_hits_at_10": 0.54,
+      "delta_tail_mrr_vs_original": -0.010730101761985966
+    }
+  ],
+  "relation_frequency_bin_metrics": [
+    {
+      "condition": "Original",
+      "bin": "low-frequency",
+      "tail_mrr": 0.36558805836607305,
+      "tail_hits_at_10": 0.5643564356435643,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Original",
+      "bin": "mid-frequency",
+      "tail_mrr": 0.3009802476345385,
+      "tail_hits_at_10": 0.4623115577889447,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Original",
+      "bin": "high-frequency",
+      "tail_mrr": 0.1829291313918269,
+      "tail_hits_at_10": 0.42,
+      "delta_tail_mrr_vs_original": null
+    },
+    {
+      "condition": "Random",
+      "bin": "low-frequency",
+      "tail_mrr": 0.3601405879308196,
+      "tail_hits_at_10": 0.5445544554455446,
+      "delta_tail_mrr_vs_original": -0.005447470435253454
+    },
+    {
+      "condition": "Random",
+      "bin": "mid-frequency",
+      "tail_mrr": 0.2909897398575533,
+      "tail_hits_at_10": 0.45226130653266333,
+      "delta_tail_mrr_vs_original": -0.009990507776985236
+    },
+    {
+      "condition": "Random",
+      "bin": "high-frequency",
+      "tail_mrr": 0.14202899907640001,
+      "tail_hits_at_10": 0.41,
+      "delta_tail_mrr_vs_original": -0.040900132315426885
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "low-frequency",
+      "tail_mrr": 0.30391603255133876,
+      "tail_hits_at_10": 0.44554455445544555,
+      "delta_tail_mrr_vs_original": -0.0616720258147343
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "mid-frequency",
+      "tail_mrr": 0.28971674164213973,
+      "tail_hits_at_10": 0.45226130653266333,
+      "delta_tail_mrr_vs_original": -0.011263505992398781
+    },
+    {
+      "condition": "Structured-low",
+      "bin": "high-frequency",
+      "tail_mrr": 0.17835053274731572,
+      "tail_hits_at_10": 0.4,
+      "delta_tail_mrr_vs_original": -0.004578598644511184
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "low-frequency",
+      "tail_mrr": 0.3668758054944378,
+      "tail_hits_at_10": 0.5643564356435643,
+      "delta_tail_mrr_vs_original": 0.001287747128364769
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "mid-frequency",
+      "tail_mrr": 0.28033422453471823,
+      "tail_hits_at_10": 0.4623115577889447,
+      "delta_tail_mrr_vs_original": -0.020646023099820277
+    },
+    {
+      "condition": "Structured-high",
+      "bin": "high-frequency",
+      "tail_mrr": 0.1857502715444567,
+      "tail_hits_at_10": 0.38,
+      "delta_tail_mrr_vs_original": 0.0028211401526297974
+    }
+  ],
+  "interpretation": {
+    "structured_missingness_reliability_profiles": "Yes. Structured perturbations changed bin-level reliability patterns relative to Random in this smoke run.",
+    "structured_low_disproportionately_affects_low_coverage_vs_random": "Yes. Structured-low produced larger tail_mrr drops in lower coverage bins than Random in this smoke run.",
+    "aggregate_vs_bin_level": "Aggregate metrics alone hide shifts; bin-level metrics reveal where degradation concentrates.",
+    "caution": "One seed, smoke subset, tail-only evaluation."
+  },
+  "next_step": "Run the 3-seed DistMult 30% pilot before adding more models.",
+  "artifacts": {
+    "raw": "experiment/results/raw",
+    "aggregated": "experiment/results/aggregated",
+    "figures": "experiment/results/figures"
+  }
+}

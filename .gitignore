@@ -3,6 +3,13 @@ experiment/results/**
 !experiment/results/raw/.gitkeep
 !experiment/results/aggregated/.gitkeep
 !experiment/results/figures/.gitkeep
+
+# Keep lightweight committed reports
+!experiment/reports/
+!experiment/reports/*.md
+!experiment/reports/*.json
+
+# Data and heavy artifacts
 data/FB15k-237/
 *.pt
 *.pth
@@ -12,6 +19,7 @@ data/FB15k-237/
 *.pkl
 *.parquet
 *.log
+*.csv
 __pycache__/
 *.pyc
 .pytest_cache/

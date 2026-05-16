@@ -15,3 +15,6 @@ bash experiment/scripts/run_smoke.sh
 - Outputs are written to `experiment/results/` and are git-ignored (except `.gitkeep` placeholders).
 - Metrics are explicitly tail-only: `tail_mrr`, `tail_hits_at_10`.
 - Stability note is included; cross-seed Jaccard@10 is deferred to pilot (3+ seeds).
+
+- Lightweight, commit-friendly summaries are written to `experiment/reports/` (`smoke_report.md`, `smoke_report.json`).
+- Keep raw artifacts (checkpoints, arrays, logs, raw/aggregated run outputs) in `experiment/results/` only.

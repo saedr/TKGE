@@ -5,10 +5,6 @@ START=$(date +%s)
 mkdir -p experiment/results/raw experiment/results/aggregated experiment/results/figures
 export PYTHONPATH="${PWD}/experiment:${PYTHONPATH:-}"
 
-for f in data/FB15k-237/train.txt data/FB15k-237/valid.txt data/FB15k-237/test.txt; do
-  [[ -f "$f" ]] || { echo "FB15k-237 files are required. Place train.txt, valid.txt, and test.txt at data/FB15k-237/."; exit 1; }
-done
-
 for c in Original Random Structured-low Structured-high; do
   python -m experiment.src.run_condition --condition "$c"
 done

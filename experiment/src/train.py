@@ -2,7 +2,7 @@ import numpy as np
 import torch
 
 
-def train_distmult(model, triples, num_entities, cfg, device):
+def train_kge(model, triples, num_entities, cfg, device):
     model.to(device)
     epochs = cfg["training"]["epochs"]
     bs = cfg["training"]["batch_size"]
