@@ -22,7 +22,7 @@ def evaluate_tail_only(model, test_triples, filter_triples, num_entities, orig_d
 
     rows = []
     top10_rows = []
-    for h, r, t in subset:
+    for query_idx, (h, r, t) in enumerate(subset):
         h_t = torch.full((num_entities,), h, device=device, dtype=torch.long)
         r_t = torch.full((num_entities,), r, device=device, dtype=torch.long)
         cand_t = torch.arange(num_entities, device=device)
@@ -37,7 +37,15 @@ def evaluate_tail_only(model, test_triples, filter_triples, num_entities, orig_d
         cov_bin = "low" if cov <= cq25 else ("high" if cov >= cq75 else "mid")
         rel_bin = "low-frequency" if relf <= rq25 else ("high-frequency" if relf >= rq75 else "mid-frequency")
         rows.append((rank, cov_bin, rel_bin))
-        top10_rows.append(top10.tolist())
+        top10_rows.append({
+            "query_idx": int(query_idx),
+            "h": int(h),
+            "r": int(r),
+            "t": int(t),
+            "coverage_bin": cov_bin,
+            "relation_frequency_bin": rel_bin,
+            "top10_tail_ids": [int(x) for x in top10.tolist()],
+        })
 
     ranks = np.array([r[0] for r in rows], dtype=float)
     mrr = float((1.0 / ranks).mean())
@@ -70,4 +78,4 @@ def evaluate_tail_only(model, test_triples, filter_triples, num_entities, orig_d
         "by_coverage_bin": by_cov,
         "by_relation_frequency_bin": by_rel,
         "num_queries": len(subset),
-    }, np.array(top10_rows, dtype=np.int64)
+    }, top10_rows

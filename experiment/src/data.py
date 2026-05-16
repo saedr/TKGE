@@ -17,7 +17,7 @@ def _read_tsv(path: Path):
 
 def load_dataset(cfg: dict, mapping_out_path: str):
     dcfg = cfg["dataset"]
-    train_p, valid_p, test_p = validate_dataset_files(dcfg["root"], dcfg["train"], dcfg["valid"], dcfg["test"])
+    (train_p, valid_p, test_p), dataset_root_used = validate_dataset_files(dcfg["root"], dcfg["train"], dcfg["valid"], dcfg["test"])
 
     train_str = _read_tsv(train_p)
     valid_str = _read_tsv(valid_p)
@@ -37,6 +37,7 @@ def load_dataset(cfg: dict, mapping_out_path: str):
         "train_count": len(train_str),
         "valid_count": len(valid_str),
         "test_count": len(test_str),
+        "dataset_root_used": dataset_root_used,
     }
     write_json(mapping_out_path, out)
 

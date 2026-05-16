@@ -1,0 +1,702 @@
+{
+  "status": {
+    "completed": true,
+    "validation_passed": true,
+    "model": "DistMult",
+    "budget": 0.1,
+    "seeds": [
+      11,
+      22,
+      33
+    ],
+    "tail_only": true
+  },
+  "completion_table": [
+    {
+      "seed": 11,
+      "condition": "Original",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "complete": true,
+      "missing_files": []
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "complete": true,
+      "missing_files": []
+    }
+  ],
+  "perturbation_checks": [
+    {
+      "seed": 11,
+      "condition": "Original",
+      "removed": 0,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 0
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 39
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 225
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 11
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "removed": 0,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 0
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 51
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 237
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 5
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "removed": 0,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 0
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 47
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 223
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "removed": 27211,
+      "zero_degree_entities_after": 0,
+      "skipped_deletions": 0,
+      "would_isolate_count": 7
+    }
+  ],
+  "overall_metrics": [
+    {
+      "condition": "Original",
+      "mean_tail_mrr": 0.2811594897427418,
+      "mean_tail_hits_at_10": 0.47500000000000003
+    },
+    {
+      "condition": "Random",
+      "mean_tail_mrr": 0.282479353317733,
+      "mean_tail_hits_at_10": 0.48583333333333334
+    },
+    {
+      "condition": "Structured-low",
+      "mean_tail_mrr": 0.27252735534860933,
+      "mean_tail_hits_at_10": 0.4666666666666666
+    },
+    {
+      "condition": "Structured-high",
+      "mean_tail_mrr": 0.28562089695586595,
+      "mean_tail_hits_at_10": 0.47833333333333333
+    }
+  ],
+  "coverage_bin_deltas": [
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.02036697502652307
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.005703699558993969
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": -0.006577732835723382
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.04430447108192359
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": -0.013681457941880526
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": -0.009059061962863824
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.0007989426751330297
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.01096367140495802
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.003702749774345704
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.005540081608995107
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.03872614409460645
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": -0.006819787667879995
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.008761322964644935
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.018392442163859934
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": -0.030910111709521626
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.011885275298122333
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.0025135741421230817
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": -0.03166891201596089
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.02961682071024002
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": -0.02384820930032111
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.043596492042696944
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.05509751738739879
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.004302247608573673
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.008997762786366992
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "low",
+      "delta_tail_mrr_vs_original": -0.04603188984195056
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "mid",
+      "delta_tail_mrr_vs_original": 0.014645059826806639
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "high",
+      "delta_tail_mrr_vs_original": 0.05860610992002502
+    }
+  ],
+  "relation_frequency_bin_deltas": [
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Original",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": 0.017138963399488116
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": -0.028827730639124194
+    },
+    {
+      "seed": 11,
+      "condition": "Random",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.02451952219411585
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.0019949247964465844
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": -0.022869349806220907
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-low",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": -0.03320156876975763
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.0006595340595141885
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.00430121568271441
+    },
+    {
+      "seed": 11,
+      "condition": "Structured-high",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.018535745450902558
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Original",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.019108136211762272
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.02161924238522428
+    },
+    {
+      "seed": 22,
+      "condition": "Random",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.04136934413962126
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": 0.015401846764835914
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": -0.012071964915083
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-low",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.02310344053137381
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.01666100587229824
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.023893638241591852
+    },
+    {
+      "seed": 22,
+      "condition": "Structured-high",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": -0.04547721260333898
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Original",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.0
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.01898604690978528
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": -0.011433691869075446
+    },
+    {
+      "seed": 33,
+      "condition": "Random",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.008212206930157728
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.023901339394587162
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.024728856016734524
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-low",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": -0.06256533006865331
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "low-frequency",
+      "delta_tail_mrr_vs_original": -0.006552693294689771
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "mid-frequency",
+      "delta_tail_mrr_vs_original": 0.018967715537411223
+    },
+    {
+      "seed": 33,
+      "condition": "Structured-high",
+      "bin": "high-frequency",
+      "delta_tail_mrr_vs_original": 0.010736806039876062
+    }
+  ],
+  "stability": [
+    {
+      "condition": "Original",
+      "overall_jaccard_at_10": 0.19311791701304085,
+      "coverage_bin_jaccard_at_10": {
+        "low": 0.1672101662813737,
+        "mid": 0.19120282996443988,
+        "high": 0.22285584184190996
+      },
+      "relation_frequency_bin_jaccard_at_10": {
+        "low-frequency": 0.20790542123650665,
+        "mid-frequency": 0.18371534667021386,
+        "high-frequency": 0.19689365272956602
+      }
+    },
+    {
+      "condition": "Random",
+      "overall_jaccard_at_10": 0.204104543547268,
+      "coverage_bin_jaccard_at_10": {
+        "low": 0.16209888551993815,
+        "mid": 0.20855889122916987,
+        "high": 0.2372015062107941
+      },
+      "relation_frequency_bin_jaccard_at_10": {
+        "low-frequency": 0.20893787458787613,
+        "mid-frequency": 0.19683167803024051,
+        "high-frequency": 0.21369588157513855
+      }
+    },
+    {
+      "condition": "Structured-low",
+      "overall_jaccard_at_10": 0.200347420109417,
+      "coverage_bin_jaccard_at_10": {
+        "low": 0.1577614155710131,
+        "mid": 0.20281415508582692,
+        "high": 0.23799995469500113
+      },
+      "relation_frequency_bin_jaccard_at_10": {
+        "low-frequency": 0.21779607762656528,
+        "mid-frequency": 0.18821592077577887,
+        "high-frequency": 0.20686595969103708
+      }
+    },
+    {
+      "condition": "Structured-high",
+      "overall_jaccard_at_10": 0.1917450363677144,
+      "coverage_bin_jaccard_at_10": {
+        "low": 0.1619542474496035,
+        "mid": 0.1885810102063972,
+        "high": 0.22786387760845964
+      },
+      "relation_frequency_bin_jaccard_at_10": {
+        "low-frequency": 0.19850617332455298,
+        "mid-frequency": 0.19109171997063465,
+        "high-frequency": 0.18621638767149604
+      }
+    }
+  ]
+}

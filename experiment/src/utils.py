@@ -48,7 +48,14 @@ def read_json(path: str | Path) -> dict:
 
 
 def validate_dataset_files(root: str, train: str, valid: str, test: str):
-    files = [Path(root) / train, Path(root) / valid, Path(root) / test]
-    if not all(p.exists() for p in files):
-        raise FileNotFoundError(REQUIRED_ERROR)
-    return files
+    preferred_root = Path(root)
+    preferred = [preferred_root / train, preferred_root / valid, preferred_root / test]
+    if all(p.exists() for p in preferred):
+        return preferred, str(preferred_root)
+
+    fallback_root = Path("data")
+    fallback = [fallback_root / train, fallback_root / valid, fallback_root / test]
+    if all(p.exists() for p in fallback):
+        return fallback, str(fallback_root)
+
+    raise FileNotFoundError(REQUIRED_ERROR)
