@@ -17,7 +17,9 @@ def _read_tsv(path: Path):
 
 def load_dataset(cfg: dict, mapping_out_path: str):
     dcfg = cfg["dataset"]
-    (train_p, valid_p, test_p), dataset_root_used = validate_dataset_files(dcfg["root"], dcfg["train"], dcfg["valid"], dcfg["test"])
+    (train_p, valid_p, test_p), dataset_root_used = validate_dataset_files(
+        dcfg["root"], dcfg["train"], dcfg["valid"], dcfg["test"], dcfg.get("allow_fallback", True)
+    )
 
     train_str = _read_tsv(train_p)
     valid_str = _read_tsv(valid_p)

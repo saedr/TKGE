@@ -13,7 +13,7 @@ jobs:
         dataset: [WN18RR, CoDEx-M]
         model: [TransE, DistMult, ComplEx, RotatE]
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -38,9 +38,11 @@ jobs:
           fi
           wc -l data/${{ matrix.dataset }}/*.txt
       - name: Run confirmatory chunk
+        env:
+          PYTHONPATH: .
         run: |
           mkdir -p confirmatory_raw
-          python -u experiment/scripts/run_confirmatory_chunk.py \
+          python -u -m experiment.scripts.run_confirmatory_chunk \
             --dataset '${{ matrix.dataset }}' \
             --model '${{ matrix.model }}' \
             --out 'confirmatory_raw/${{ matrix.dataset }}_${{ matrix.model }}.json'
@@ -48,13 +50,12 @@ jobs:
         if: always()
         with:
           name: result-${{ matrix.dataset }}-${{ matrix.model }}
-          path: confirmatory_raw/*.json
+          path: confirmatory_raw/
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 90
 
   aggregate:
     needs: run
-    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,13 +69,17 @@ jobs:
           path: confirmatory_downloads
           merge-multiple: true
       - name: Aggregate
+        env:
+          PYTHONPATH: .
         run: |
-          python experiment/scripts/aggregate_confirmatory.py \
+          python -m experiment.scripts.aggregate_confirmatory \
             --indir confirmatory_downloads \
-            --out confirmatory_summary.json
-          cat confirmatory_summary.json
+            --out confirmatory_analysis/confirmatory_summary.json \
+            --report confirmatory_analysis/confirmatory_report.md \
+            --tables-dir confirmatory_analysis/tables
+          cat confirmatory_analysis/confirmatory_report.md
       - uses: actions/upload-artifact@v4
         with:
           name: confirmatory-summary
-          path: confirmatory_summary.json
-          retention-days: 30
+          path: confirmatory_analysis/
+          retention-days: 90
