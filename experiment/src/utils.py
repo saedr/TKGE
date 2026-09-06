@@ -8,9 +8,6 @@ import numpy as np
 import torch
 
 
-REQUIRED_ERROR = "FB15k-237 files are required. Place train.txt, valid.txt, and test.txt at data/FB15k-237/."
-
-
 def set_seed(seed: int) -> None:
     random.seed(seed)
     np.random.seed(seed)
@@ -47,15 +44,17 @@ def read_json(path: str | Path) -> dict:
         return json.load(f)
 
 
-def validate_dataset_files(root: str, train: str, valid: str, test: str):
+def validate_dataset_files(root: str, train: str, valid: str, test: str, allow_fallback: bool = True):
     preferred_root = Path(root)
     preferred = [preferred_root / train, preferred_root / valid, preferred_root / test]
     if all(p.exists() for p in preferred):
         return preferred, str(preferred_root)
 
-    fallback_root = Path("data")
-    fallback = [fallback_root / train, fallback_root / valid, fallback_root / test]
-    if all(p.exists() for p in fallback):
-        return fallback, str(fallback_root)
+    if allow_fallback:
+        fallback_root = Path("data")
+        fallback = [fallback_root / train, fallback_root / valid, fallback_root / test]
+        if all(p.exists() for p in fallback):
+            return fallback, str(fallback_root)
 
-    raise FileNotFoundError(REQUIRED_ERROR)
+    missing = [str(p) for p in preferred if not p.exists()]
+    raise FileNotFoundError(f"Required dataset files are missing: {missing}")

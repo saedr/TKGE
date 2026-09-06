@@ -1,0 +1,11 @@
+{
+  "chunks": 8,
+  "runs": 240,
+  "perturbed_runs": 216,
+  "zero_degree_violations": 0,
+  "metric_recomputation_failures": 0,
+  "slice_assignment_failures": 0,
+  "nonfinite_rr_values": 0,
+  "loss_non_decrease_runs": 30,
+  "status": "PASS"
+}
