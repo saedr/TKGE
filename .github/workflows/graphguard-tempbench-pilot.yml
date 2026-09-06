@@ -17,7 +17,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install torch==2.5.1 transformers==4.53.3 huggingface_hub==0.28.1 scikit-learn==1.5.2 numpy==1.26.4
+          pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install transformers==4.53.3 huggingface_hub==0.33.5 numpy==1.26.4
       - name: Run frozen phenomenon gate
         env:
           PYTHONPATH: .
