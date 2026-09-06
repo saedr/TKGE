@@ -1,0 +1,32 @@
+name: Prospective revision feasibility
+
+on:
+  pull_request:
+    branches: [prospective-revision-base]
+  workflow_dispatch:
+
+jobs:
+  feasibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install huggingface_hub==0.34.4 numpy==1.26.4 pandas==2.2.3 scikit-learn==1.6.1
+      - name: Run data feasibility gate
+        env:
+          HF_HUB_ENABLE_HF_TRANSFER: '0'
+        run: |
+          python -u experiment/scripts/prospective_revision_feasibility.py \
+            --workdir prospective_revision_work \
+            --outdir prospective_revision_results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prospective-revision-feasibility
+          path: prospective_revision_results/
+          if-no-files-found: warn
+          retention-days: 90
