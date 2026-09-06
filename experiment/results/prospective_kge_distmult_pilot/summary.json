@@ -1,0 +1,47 @@
+{
+  "decision": "KILL",
+  "gate": {
+    "required_delta_auprc": 0.005,
+    "required_ci": "paired-bootstrap 95% CI entirely above zero"
+  },
+  "test_2025": {
+    "eligible_triples": 25058,
+    "deprecate_positives": 147,
+    "prevalence": 0.005866,
+    "controls_auprc": 0.058969,
+    "controls_plus_distmult_auprc": 0.058658,
+    "delta_auprc": -0.000311,
+    "delta_auprc_ci95": [-0.003325, 0.000606],
+    "controls_auroc": 0.821049,
+    "controls_plus_distmult_auroc": 0.820162
+  },
+  "training_sanity": {
+    "2024": {
+      "snapshot_triples": 36306231,
+      "entities": 5977180,
+      "relations": 1297,
+      "epoch_losses": [1.1102961817088524, 0.6564492821852296],
+      "positive_gt_random_negative": 0.98408,
+      "passed": true
+    },
+    "2025": {
+      "snapshot_triples": 37542677,
+      "entities": 6100962,
+      "relations": 1351,
+      "epoch_losses": [1.1036241240415376, 0.6432395167840818],
+      "positive_gt_random_negative": 0.98448,
+      "passed": true
+    }
+  },
+  "frozen_configuration": {
+    "model": "DistMult",
+    "embedding_dim": 32,
+    "epochs": 2,
+    "negatives_per_positive": 1,
+    "negative_sampling": "uniform tail corruption",
+    "optimizer": "sparse Adagrad",
+    "learning_rate": 0.1,
+    "relation_normalization": "z-score against all triples of same relation in each Jan-1 snapshot"
+  },
+  "workflow_run": "https://github.com/saedr/TKGE/actions/runs/34007765134"
+}
