@@ -63,8 +63,8 @@
     }
   ],
   "corrected_analysis": {
-    "report_sha256": "a051acead70d558cae08ae4bd9b2eefdc10508c9357959dbbf9739da5936eea0",
-    "summary_sha256": "d5ad60d0a88b25cd3dc3fe80d9508b882afd69dcda573eb0bcbe67619181de6c",
+    "report_sha256": "677ba7550ff7ffd5318f3e41a121d86d3d368c65b70f942c2f1a120f728c45a0",
+    "summary_sha256": "131dba3b0c096b267c42f199d3884439ba07ffa308cb2332a373dcae319b6bba",
     "validation_sha256": "79c8c2f85cb0c556a6fbd175a641c96774885721870ac1c72451fd9bfd520d5c",
     "note": "The committed report supersedes the workflow summary wording by distinguishing the exact entity-coverage replication from the relation-frequency interaction; numerical estimates are unchanged."
   }

@@ -2,7 +2,7 @@
 
 ## Decision: **CONTINUE**
 
-At least one model × mechanism interaction interval excluded zero on a new dataset, with qualitative support from the existing FB15k-237 pilot; no supported ranking reversal occurred.
+Relation-low produced uncertainty-supported overall model × mechanism interactions on both new datasets (5/6 model pairs on WN18RR and 4/6 on CoDEx-M); no supported ranking reversal occurred.
 
 The estimand is tail-MRR degradation from the clean graph and, primarily, differential degradation versus random deletion. Positive differential degradation means that the structured mechanism harms a model more than random deletion. Model × mechanism interaction is the difference in that differential degradation between models.
 
@@ -158,7 +158,20 @@ No uncertainty-supported model-ranking reversal occurred.
 
 ## FB15k-237 replication assessment
 
-The FB15k-237 pilot showed model-dependent point differences between random and entity-coverage structured deletion: differential degradation was -0.012700 for TransE and 0.000798 for DistMult (point interaction -0.013498). That pilot did not provide the hierarchical uncertainty used here. The interaction reproduced with uncertainty support on both new datasets.
+The FB15k-237 pilot showed model-dependent point differences between random and entity-coverage structured deletion: differential degradation was -0.012700 for TransE and 0.000798 for DistMult (point interaction -0.013498). That pilot did not provide the hierarchical uncertainty used here. The specific entity-coverage Structured-low pattern did not reproduce in overall MRR on either new dataset; only 3 slice-specific pairwise interaction interval(s) excluded zero. The broader model × structured-missingness phenomenon did reproduce for the prespecified relation-frequency mechanism in overall MRR on both new datasets.
+
+The sign of the TransE-versus-bilinear interaction differs between WN18RR and CoDEx-M, so the evidence supports model dependence, not a universal claim that one family is always more fragile.
+
+## Training-sanity limitation
+
+WN18RR RotatE's final epoch loss exceeded its first epoch loss in 30/30 runs, and its clean MRR was 0.002263. RotatE-involving WN18RR contrasts should therefore not be treated as evidence about a competitive RotatE model. The continuation result does not depend on them: these uncertainty-supported overall Relation-low interactions remain after excluding RotatE:
+
+| Dataset | Models A−B | Interaction | 95% CI |
+|---|---|---|---|
+| WN18RR | TransE−DistMult | 0.050259 | [0.031202, 0.075713] |
+| WN18RR | TransE−ComplEx | 0.039010 | [0.024513, 0.056873] |
+| CoDEx-M | TransE−DistMult | -0.014305 | [-0.024157, -0.005331] |
+| CoDEx-M | TransE−ComplEx | -0.018516 | [-0.028566, -0.008703] |
 
 ## Frozen design and uncertainty
 

@@ -9921,6 +9921,44 @@
       "supported": false
     }
   ],
+  "training_sanity": {
+    "WN18RR": {
+      "TransE": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "DistMult": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "ComplEx": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "RotatE": {
+        "non_decreasing_runs": 30,
+        "total_runs": 30
+      }
+    },
+    "CoDEx-M": {
+      "TransE": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "DistMult": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "ComplEx": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      },
+      "RotatE": {
+        "non_decreasing_runs": 0,
+        "total_runs": 30
+      }
+    }
+  },
   "fb15k_prior": {
     "status": "exploratory point-estimate evidence; no hierarchical interval",
     "entity_structured_differential_degradation": {
@@ -9932,13 +9970,33 @@
   },
   "decision": {
     "label": "CONTINUE",
-    "rationale": "At least one model \u00d7 mechanism interaction interval excluded zero on a new dataset, with qualitative support from the existing FB15k-237 pilot; no supported ranking reversal occurred.",
+    "rationale": "Relation-low produced uncertainty-supported overall model \u00d7 mechanism interactions on both new datasets (5/6 model pairs on WN18RR and 4/6 on CoDEx-M); no supported ranking reversal occurred.",
     "supported_interactions_by_dataset": {
       "WN18RR": 29,
       "CoDEx-M": 25
     },
+    "supported_overall_interactions": {
+      "WN18RR": {
+        "Structured-low": 0,
+        "Relation-low": 5
+      },
+      "CoDEx-M": {
+        "Structured-low": 0,
+        "Relation-low": 4
+      }
+    },
+    "supported_slice_interactions": {
+      "WN18RR": {
+        "Structured-low": 2,
+        "Relation-low": 22
+      },
+      "CoDEx-M": {
+        "Structured-low": 1,
+        "Relation-low": 20
+      }
+    },
     "supported_reversals": 0,
     "fb15k_qualitative_support": true,
-    "replication_statement": "The interaction reproduced with uncertainty support on both new datasets."
+    "replication_statement": "The specific entity-coverage Structured-low pattern did not reproduce in overall MRR on either new dataset; only 3 slice-specific pairwise interaction interval(s) excluded zero. The broader model \u00d7 structured-missingness phenomenon did reproduce for the prespecified relation-frequency mechanism in overall MRR on both new datasets."
   }
 }
