@@ -6,9 +6,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  pilot:
+  shard:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,17 +23,45 @@ jobs:
           pip install --upgrade pip
           pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
           pip install transformers==4.53.3 huggingface_hub==0.33.5 numpy==1.26.4
-      - name: Run frozen phenomenon gate
+      - name: Run frozen inference shard
         env:
           PYTHONPATH: .
           TOKENIZERS_PARALLELISM: 'false'
         run: |
-          python -u experiment/scripts/graphguard_tempbench_pilot.py \
+          python -u experiment/scripts/graphguard_tempbench_shard.py \
+            --shard-index ${{ matrix.shard }} \
+            --num-shards 5 \
+            --outdir experiment/results/graphguard_tempbench_shard
+      - uses: actions/upload-artifact@v4
+        with:
+          name: graphguard-tempbench-shard-${{ matrix.shard }}
+          path: experiment/results/graphguard_tempbench_shard/
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy==1.26.4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: graphguard-tempbench-shard-*
+          path: shard_artifacts
+      - name: Apply frozen gate
+        env:
+          PYTHONPATH: .
+        run: |
+          python -u experiment/scripts/graphguard_tempbench_aggregate.py \
+            --input-root shard_artifacts \
             --outdir experiment/results/graphguard_tempbench_pilot
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: graphguard-tempbench-pilot
+          name: graphguard-tempbench-pilot-summary
           path: experiment/results/graphguard_tempbench_pilot/
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 90
