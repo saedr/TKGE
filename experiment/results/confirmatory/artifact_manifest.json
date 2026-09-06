@@ -1,0 +1,71 @@
+{
+  "repository": "saedr/TKGE",
+  "branch": "confirmatory-structured-missingness",
+  "execution_commit": "63bab86fb171edbb2907a96fd183dec61e2de951",
+  "workflow_run_id": 33998461450,
+  "workflow_run_url": "https://github.com/saedr/TKGE/actions/runs/33998461450",
+  "workflow_conclusion": "success",
+  "grid": {
+    "datasets": ["WN18RR", "CoDEx-M"],
+    "models": ["TransE", "DistMult", "ComplEx", "RotatE"],
+    "total_runs": 240,
+    "perturbed_runs": 216,
+    "bootstrap_replications": 4000
+  },
+  "raw_artifacts": [
+    {
+      "name": "result-WN18RR-TransE",
+      "artifact_id": 9978836213,
+      "zip_sha256": "1e1ffe5e6da669cb11d4dbcbd46b70caf42a8305c5a2741f0efd7b86a3ef5c45",
+      "raw_json_sha256": "e309fd7bcf202aa6e2f5ed6a593b596d315e827424aff730ad0b0b74be57ec0c"
+    },
+    {
+      "name": "result-WN18RR-DistMult",
+      "artifact_id": 9978840194,
+      "zip_sha256": "c0ed1bb2f61990341f498649e295020de3467511bb907324f16ab5460d0d48b5",
+      "raw_json_sha256": "f91f234958512f106593c8282f918e12ea285c8278958de1c795c45675f32c44"
+    },
+    {
+      "name": "result-WN18RR-ComplEx",
+      "artifact_id": 9978884057,
+      "zip_sha256": "ddaca4c6df827600974286ba08bd084e378f5cfbc7c00d6494243b6d398aa718",
+      "raw_json_sha256": "24c0221d13c44cb1234c0cefeeabd6c06c508ed08cbc60c6e945b795223b1b38"
+    },
+    {
+      "name": "result-WN18RR-RotatE",
+      "artifact_id": 9978979273,
+      "zip_sha256": "0e047072d520b9b1e61e58f7726b59ae6bf11e6bcae8a7efd0ef8b5955a96f11",
+      "raw_json_sha256": "60163886e1fd342c3ecddef93fe4a3ecb9f0790b44d4b42fe77d27b5385e1313"
+    },
+    {
+      "name": "result-CoDEx-M-TransE",
+      "artifact_id": 9978847929,
+      "zip_sha256": "2209e6a5da820be6b0e2001f672892ba69023f4ea451a3dc974b4805a5522956",
+      "raw_json_sha256": "d00e0e2f80968d19da53b9415f5472d1458f593f0dae6066bb2f1baa743a9288"
+    },
+    {
+      "name": "result-CoDEx-M-DistMult",
+      "artifact_id": 9978851704,
+      "zip_sha256": "007504b01a1a593a6049f5dcfa008391ccf3f0c8417b4ed0c54d5909e8b75453",
+      "raw_json_sha256": "8e603b181b02494ac1085730da8e13f1cc77f011670d8af7579319320fe23393"
+    },
+    {
+      "name": "result-CoDEx-M-ComplEx",
+      "artifact_id": 9978922407,
+      "zip_sha256": "0502fb5721d480663142031fef94e6972f947b934f12e0978a5b17164fcca97c",
+      "raw_json_sha256": "7d0c9e811ae6359b45577c1163a0862667f357059574c119335819304afc99b6"
+    },
+    {
+      "name": "result-CoDEx-M-RotatE",
+      "artifact_id": 9979096551,
+      "zip_sha256": "3ac2ee4938e36f42569df35500c9c0d77396695d3395d37c715d4b3e35de803d",
+      "raw_json_sha256": "d5ce32d551d0eb423f5e6693749700c2578194274856a68dc97003c7b1553758"
+    }
+  ],
+  "corrected_analysis": {
+    "report_sha256": "a051acead70d558cae08ae4bd9b2eefdc10508c9357959dbbf9739da5936eea0",
+    "summary_sha256": "d5ad60d0a88b25cd3dc3fe80d9508b882afd69dcda573eb0bcbe67619181de6c",
+    "validation_sha256": "79c8c2f85cb0c556a6fbd175a641c96774885721870ac1c72451fd9bfd520d5c",
+    "note": "The committed report supersedes the workflow summary wording by distinguishing the exact entity-coverage replication from the relation-frequency interaction; numerical estimates are unchanged."
+  }
+}

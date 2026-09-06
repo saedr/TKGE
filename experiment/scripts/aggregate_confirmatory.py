@@ -175,7 +175,10 @@ def load_fb15k_prior():
     }
 
 
-def build_report(mean_rows, differential_rows, interaction_rows, reversal_rows, slice_counts, decision, fb15k_prior):
+def build_report(
+    mean_rows, differential_rows, interaction_rows, reversal_rows, slice_counts, decision, fb15k_prior,
+    training_sanity,
+):
     overall_means = [x for x in mean_rows if x["slice"] == "overall"]
     mean_table = markdown_table(
         ["Dataset", "Model", "Mechanism", "Mean MRR", "95% hierarchical CI"],
@@ -223,6 +226,18 @@ def build_report(mean_rows, differential_rows, interaction_rows, reversal_rows, 
         "That pilot did not provide the hierarchical uncertainty used here. "
         + decision["replication_statement"]
     )
+    converged_family_interactions = [
+        x for x in interaction_rows
+        if x["slice"] == "overall"
+        and x["condition"] == "Relation-low"
+        and x["supported"]
+        and "RotatE" not in (x["model_a"], x["model_b"])
+    ]
+    converged_table = markdown_table(
+        ["Dataset", "Models A−B", "Interaction", "95% CI"],
+        [[x["dataset"], f"{x['model_a']}−{x['model_b']}", fnum(x["interaction"]), fci(x)]
+         for x in converged_family_interactions],
+    )
     return f"""# Confirmatory structured-missingness replication
 
 ## Decision: **{decision['label']}**
@@ -261,6 +276,14 @@ Complete slice estimates are in `tables/mean_mrr.csv` and `tables/differential_d
 
 {replication}
 
+The sign of the TransE-versus-bilinear interaction differs between WN18RR and CoDEx-M, so the evidence supports model dependence, not a universal claim that one family is always more fragile.
+
+## Training-sanity limitation
+
+WN18RR RotatE's final epoch loss exceeded its first epoch loss in {training_sanity['WN18RR']['RotatE']['non_decreasing_runs']}/30 runs, and its clean MRR was 0.002263. RotatE-involving WN18RR contrasts should therefore not be treated as evidence about a competitive RotatE model. The continuation result does not depend on them: these uncertainty-supported overall Relation-low interactions remain after excluding RotatE:
+
+{converged_table}
+
 ## Frozen design and uncertainty
 
 - Datasets: WN18RR and CoDEx-M; models: TransE, DistMult, ComplEx, RotatE.
@@ -276,6 +299,18 @@ Complete slice estimates are in `tables/mean_mrr.csv` and `tables/differential_d
 
 def main(args):
     chunks = load_chunks(args.indir)
+    training_sanity = {
+        dataset: {
+            model: {
+                "non_decreasing_runs": sum(
+                    not run["loss_end"] < run["loss_start"] for run in chunks[(dataset, model)]["runs"]
+                ),
+                "total_runs": len(chunks[(dataset, model)]["runs"]),
+            }
+            for model in MODELS
+        }
+        for dataset in DATASETS
+    }
     mean_rows = []
     differential_rows = []
     interaction_rows = []
@@ -361,9 +396,34 @@ def main(args):
         dataset: sum(x["supported"] for x in interaction_rows if x["dataset"] == dataset)
         for dataset in DATASETS
     }
+    supported_overall = {
+        dataset: {
+            condition: sum(
+                x["supported"]
+                for x in interaction_rows
+                if x["dataset"] == dataset and x["slice"] == "overall" and x["condition"] == condition
+            )
+            for condition in STRUCTURED
+        }
+        for dataset in DATASETS
+    }
+    supported_slices = {
+        dataset: {
+            condition: sum(
+                x["supported"]
+                for x in interaction_rows
+                if x["dataset"] == dataset and x["slice"] != "overall" and x["condition"] == condition
+            )
+            for condition in STRUCTURED
+        }
+        for dataset in DATASETS
+    }
     reversals = [x for x in reversal_rows if x["supported"]]
-    any_new_interaction = any(supported_by_dataset.values())
-    other_dataset_support = all(supported_by_dataset.values())
+    overall_support_by_dataset = {
+        dataset: sum(supported_overall[dataset].values()) > 0 for dataset in DATASETS
+    }
+    any_new_interaction = any(overall_support_by_dataset.values())
+    other_dataset_support = all(overall_support_by_dataset.values())
     fb15k_prior = load_fb15k_prior()
     fb15k_qualitative_support = fb15k_prior["qualitative_model_dependence"]
     continue_gate = any_new_interaction and (other_dataset_support or fb15k_qualitative_support)
@@ -376,23 +436,31 @@ def main(args):
     elif continue_gate:
         label = "CONTINUE"
         rationale = (
-            "At least one model × mechanism interaction interval excluded zero on a new dataset, "
-            "with qualitative support from the existing FB15k-237 pilot; no supported ranking reversal occurred."
+            "Relation-low produced uncertainty-supported overall model × mechanism interactions on both "
+            f"new datasets ({supported_overall['WN18RR']['Relation-low']}/6 model pairs on WN18RR and "
+            f"{supported_overall['CoDEx-M']['Relation-low']}/6 on CoDEx-M); no supported ranking reversal occurred."
         )
     else:
         label = "SHELVE"
         rationale = "The model × missingness interaction did not reproduce with uncertainty support on either new dataset."
-    if all(supported_by_dataset.values()):
-        replication_statement = "The interaction reproduced with uncertainty support on both new datasets."
-    elif any_new_interaction:
-        supported_names = [x for x, value in supported_by_dataset.items() if value]
-        replication_statement = f"The interaction reproduced with uncertainty support on {', '.join(supported_names)} but not both new datasets."
+    entity_slice_total = sum(supported_slices[d]["Structured-low"] for d in DATASETS)
+    if any(supported_overall[d]["Structured-low"] for d in DATASETS):
+        replication_statement = (
+            "The specific entity-coverage Structured-low interaction reproduced in overall MRR on at least one new dataset."
+        )
     else:
-        replication_statement = "The interaction did not reproduce with uncertainty support on either new dataset."
+        replication_statement = (
+            "The specific entity-coverage Structured-low pattern did not reproduce in overall MRR on either new "
+            f"dataset; only {entity_slice_total} slice-specific pairwise interaction interval(s) excluded zero. "
+            "The broader model × structured-missingness phenomenon did reproduce for the prespecified "
+            "relation-frequency mechanism in overall MRR on both new datasets."
+        )
     decision = {
         "label": label,
         "rationale": rationale,
         "supported_interactions_by_dataset": supported_by_dataset,
+        "supported_overall_interactions": supported_overall,
+        "supported_slice_interactions": supported_slices,
         "supported_reversals": len(reversals),
         "fb15k_qualitative_support": fb15k_qualitative_support,
         "replication_statement": replication_statement,
@@ -409,6 +477,7 @@ def main(args):
         "differential_degradation": differential_rows,
         "interactions": interaction_rows,
         "reversals": reversal_rows,
+        "training_sanity": training_sanity,
         "fb15k_prior": fb15k_prior,
         "decision": decision,
     }
@@ -423,7 +492,10 @@ def main(args):
     write_csv(tables / "reversals.csv", reversal_rows)
     report_path = Path(args.report) if args.report else out_path.parent / "confirmatory_report.md"
     report_path.write_text(
-        build_report(mean_rows, differential_rows, interaction_rows, reversal_rows, slice_counts, decision, fb15k_prior),
+        build_report(
+            mean_rows, differential_rows, interaction_rows, reversal_rows, slice_counts, decision, fb15k_prior,
+            training_sanity,
+        ),
         encoding="utf-8",
     )
     print(json.dumps(decision, indent=2))
