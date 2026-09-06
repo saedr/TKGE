@@ -1,0 +1,33 @@
+name: Prospective KGE reliability pilot
+
+on:
+  pull_request:
+    branches: [prospective-kge-pilot-base]
+  workflow_dispatch:
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install numpy==1.26.4 pandas==2.2.3 scikit-learn==1.5.2 huggingface_hub==0.28.1 torch==2.5.1
+      - name: Run frozen DistMult prospective gate
+        env:
+          PYTHONPATH: .
+        run: |
+          python -u -m experiment.scripts.prospective_kge_distmult_pilot \
+            --workdir pilot_work \
+            --outdir experiment/results/prospective_kge_distmult_pilot
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: prospective-kge-distmult-pilot
+          path: experiment/results/prospective_kge_distmult_pilot/
+          if-no-files-found: warn
+          retention-days: 90
