@@ -1,0 +1,74 @@
+name: bilateral-calibration-pilot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'experiment/bilateral_calibration/**'
+      - '.github/workflows/bilateral_calibration_pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'numpy==1.26.4' 'torch==2.3.1'
+
+      - name: Obtain pinned public reference datasets
+        run: |
+          mkdir -p external
+          git clone --quiet https://github.com/nju-websoft/CCA.git external/CCA
+          cd external/CCA
+          git checkout --quiet 9bd43e9f4277d533727adad34ca480fe0779c70b
+          test -f dataset/fb15k-237/train.txt
+          test -f dataset/wn18rr/train.txt
+
+      - name: Run frozen falsification
+        id: pilot
+        shell: bash
+        run: |
+          set +e
+          mkdir -p experiment/bilateral_calibration/results
+          python experiment/bilateral_calibration/run_pilot.py \
+            --data-root external/CCA/dataset \
+            --output experiment/bilateral_calibration/results \
+            > experiment/bilateral_calibration/results/run.log 2>&1
+          rc=$?
+          echo "return_code=$rc" >> "$GITHUB_OUTPUT"
+          tail -n 100 experiment/bilateral_calibration/results/run.log || true
+          if [ -f experiment/bilateral_calibration/results/RESULT.json ]; then
+            cat experiment/bilateral_calibration/results/RESULT.json
+          fi
+          exit 0
+
+      - name: Print decision
+        if: always()
+        run: |
+          echo '## Bilateral calibration falsification' >> "$GITHUB_STEP_SUMMARY"
+          if [ -f experiment/bilateral_calibration/results/RESULT.json ]; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat experiment/bilateral_calibration/results/RESULT.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'No RESULT.json was produced; this is a technical execution failure, not a scientific result.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bilateral-calibration-results
+          path: experiment/bilateral_calibration/results
+          if-no-files-found: warn
