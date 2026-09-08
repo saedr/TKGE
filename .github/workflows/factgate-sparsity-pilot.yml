@@ -1,0 +1,68 @@
+name: FactGate causal-fact sparsity pilot
+
+on:
+  pull_request:
+    branches: [factgate-sparsity-base]
+  workflow_dispatch:
+
+jobs:
+  shard:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install transformers==4.53.3 huggingface_hub==0.33.5 numpy==1.26.4
+      - name: Run frozen sparsity shard
+        env:
+          PYTHONPATH: .
+          TOKENIZERS_PARALLELISM: 'false'
+        run: |
+          python -u experiment/scripts/factgate_tau_pilot.py \
+            --shard ${{ matrix.shard }} \
+            --n-shards 5 \
+            --outdir experiment/results/factgate_sparsity/shard_${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: factgate-sparsity-shard-${{ matrix.shard }}
+          path: experiment/results/factgate_sparsity/shard_${{ matrix.shard }}/factgate_shard_${{ matrix.shard }}.jsonl
+          if-no-files-found: warn
+          retention-days: 90
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy==1.26.4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: factgate-sparsity-shard-*
+          path: shard_artifacts
+          merge-multiple: false
+      - name: Apply frozen gate
+        env:
+          PYTHONPATH: .
+        run: |
+          python -u experiment/scripts/factgate_tau_aggregate.py \
+            --input-root shard_artifacts \
+            --outdir experiment/results/factgate_sparsity/final
+      - uses: actions/upload-artifact@v4
+        with:
+          name: factgate-sparsity-summary
+          path: experiment/results/factgate_sparsity/final/
+          retention-days: 90
