@@ -1,0 +1,39 @@
+name: construction-blast-radius-data-probe
+
+on:
+  push:
+    branches: [construction-blast-radius-pilot]
+    paths:
+      - '.github/workflows/construction_blast_radius_probe.yml'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install gdown
+        run: python -m pip install --quiet 'gdown>=6.1.0,<7'
+      - name: Resolve public dataset folder without downloading
+        run: |
+          set -euo pipefail
+          gdown 'https://drive.google.com/drive/folders/1x-8OonL8SMDpNyfGyBmwzsgQL_zVMojx?usp=sharing' --folder --json > drive_listing.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('drive_listing.json')
+          rows = json.loads(p.read_text())
+          print(f'RESOLVED_FILES={len(rows)}')
+          for row in rows:
+              print(row.get('path'), row.get('url'))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: real-ea-drive-probe
+          path: drive_listing.json
+          if-no-files-found: ignore
