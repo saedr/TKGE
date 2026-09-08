@@ -73,6 +73,8 @@ def value_type(v):
     return "str"
 
 def set_path(obj, path, value):
+    if not path:
+        raise ValueError("Cannot set an empty JSON path")
     cur = obj
     for p in path[:-1]:
         cur = cur[int(p)] if isinstance(cur, list) else cur[p]
@@ -104,6 +106,8 @@ def build_pool(data):
                 continue
             tname = str(msg.get("name") or "tool")
             for path, v in flatten(obj):
+                if not path:
+                    continue
                 key = (fact_key(tname, path), value_type(v))
                 if v not in pool[key]:
                     pool[key].append(v)
@@ -132,6 +136,8 @@ def candidate_from_call(ep, call_idx, msg, pool):
         obj = parse_tool_json(tm)
         tname = str(tm.get("name") or "tool")
         for path, v in flatten(obj):
+            if not path:
+                continue
             alts = donor_values(pool, tname, path, v)
             if len(alts) >= N_ALTS:
                 facts.append({
