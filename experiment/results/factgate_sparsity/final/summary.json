@@ -1,0 +1,16 @@
+{
+  "n_candidates": 54,
+  "n_baseline_correct": 15,
+  "baseline_tool_accuracy": 0.2777777777777778,
+  "n_sensitive": 6,
+  "sensitive_fraction_of_baseline_correct": 0.4,
+  "median_fraction80": 0.5,
+  "mean_fraction80": 0.4583333333333333,
+  "median_total_influence": 6.0,
+  "median_max_fact_influence": 1.0,
+  "fraction_sensitive_passing_20pct_individually": 0.16666666666666666,
+  "decision": "INCONCLUSIVE_WEAK_PROBE",
+  "min_baseline_correct_gate": 20,
+  "min_sensitive_gate": 10,
+  "sparsity_gate_fraction80_median": 0.2
+}
