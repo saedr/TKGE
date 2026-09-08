@@ -24,6 +24,14 @@ def has_datasets(root):
     roots = [p for p in Path(root).rglob("rel_triples_1") if p.parent.name in {"DB-YG-15K", "DB-WD-15K"} and p.parent.parent.name == "RealEA"]
     return {p.parent.name for p in roots} == {"DB-YG-15K", "DB-WD-15K"}
 
+def write_archive_listing(dest, names):
+    names = [str(n).replace("\\", "/") for n in names]
+    (Path(dest) / "archive_listing.txt").write_text("\n".join(names), encoding="utf-8")
+    relevant = [n for n in names if any(k in n.lower() for k in ("realea", "15k", "dbp", "yago", "wikidata", "yg", "wd"))]
+    print("ARCHIVE_LAYOUT_DIAGNOSTIC", flush=True)
+    for n in (relevant[:250] if relevant else names[:250]):
+        print(n, flush=True)
+
 def extract_selected(archive, dest):
     def wanted(name):
         name = name.replace("\\", "/")
@@ -31,8 +39,11 @@ def extract_selected(archive, dest):
     archive = Path(archive)
     if zipfile.is_zipfile(archive):
         with zipfile.ZipFile(archive) as z:
-            names = [n for n in z.namelist() if wanted(n)]
-            if not names: return False
+            all_names = z.namelist()
+            names = [n for n in all_names if wanted(n)]
+            if not names:
+                write_archive_listing(dest, all_names)
+                return False
             for n in names:
                 if n.endswith("/"): continue
                 target = dest / safe_rel(n); target.parent.mkdir(parents=True, exist_ok=True)
@@ -40,8 +51,11 @@ def extract_selected(archive, dest):
         return True
     try:
         with tarfile.open(archive) as t:
-            members = [m for m in t.getmembers() if m.isfile() and wanted(m.name)]
-            if not members: return False
+            all_members = t.getmembers()
+            members = [m for m in all_members if m.isfile() and wanted(m.name)]
+            if not members:
+                write_archive_listing(dest, [m.name for m in all_members])
+                return False
             for m in members:
                 target = dest / safe_rel(m.name); target.parent.mkdir(parents=True, exist_ok=True)
                 src = t.extractfile(m)
@@ -67,7 +81,7 @@ def main():
             print("Downloading dataset archive", row["path"], flush=True); download(row["url"], archive)
             if extract_selected(archive, dest): break
     if not has_datasets(dest):
-        raise RuntimeError("Required public RealEA 15K files were not retrievable from the current published Drive folder.")
+        raise RuntimeError("Required public RealEA 15K files were not retrievable from the current published Drive folder using the frozen dataset names; see archive_layout diagnostic.")
     print("REALEA_DATA_READY")
 
 if __name__ == "__main__": main()
