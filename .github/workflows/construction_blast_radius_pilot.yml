@@ -1,0 +1,106 @@
+name: construction-blast-radius-pilot
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'experiment/construction_blast_radius/**'
+      - '.github/workflows/construction_blast_radius_pilot.yml'
+  workflow_dispatch:
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --quiet 'gdown>=6.1.0,<7' 'numpy<3' 'scipy<2' 'networkx<4'
+
+      - name: Fetch selected public RealEA data
+        id: data
+        shell: bash
+        run: |
+          set +e
+          mkdir -p experiment/construction_blast_radius/results
+          python experiment/construction_blast_radius/fetch_realea.py --output external_data > experiment/construction_blast_radius/results/data_fetch.log 2>&1
+          rc=$?
+          if [ "$rc" -eq 0 ]; then
+            echo 'ok=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ok=false' >> "$GITHUB_OUTPUT"
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          log=Path('experiment/construction_blast_radius/results/data_fetch.log').read_text(errors='replace')
+          Path('experiment/construction_blast_radius/results/RESULT.json').write_text(json.dumps({'decision':'KILL-BENCHMARK','stage':'public_data_retrieval','error':log[-6000:]},indent=2))
+          PY
+          fi
+          exit 0
+
+      - name: Obtain public PARIS implementation
+        id: paris
+        if: steps.data.outputs.ok == 'true'
+        shell: bash
+        run: |
+          set +e
+          git clone --depth 1 https://github.com/dig-team/PARIS.git external_paris > experiment/construction_blast_radius/results/paris_fetch.log 2>&1
+          rc=$?
+          if [ "$rc" -eq 0 ] && [ -f external_paris/paris.jar ]; then
+            echo 'ok=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ok=false' >> "$GITHUB_OUTPUT"
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiment/construction_blast_radius/results/paris_fetch.log')
+          log=p.read_text(errors='replace') if p.exists() else 'PARIS jar missing'
+          Path('experiment/construction_blast_radius/results/RESULT.json').write_text(json.dumps({'decision':'KILL-BENCHMARK','stage':'paris_retrieval','error':log[-6000:]},indent=2))
+          PY
+          fi
+          exit 0
+
+      - name: Run frozen pilot
+        if: steps.data.outputs.ok == 'true' && steps.paris.outputs.ok == 'true'
+        shell: bash
+        run: |
+          set +e
+          python experiment/construction_blast_radius/run_pilot.py \
+            --data-root external_data \
+            --paris-jar external_paris/paris.jar \
+            --output experiment/construction_blast_radius/results \
+            > experiment/construction_blast_radius/results/pilot.log 2>&1
+          rc=$?
+          if [ "$rc" -ne 0 ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiment/construction_blast_radius/results/pilot.log')
+          log=p.read_text(errors='replace') if p.exists() else 'pilot failed before log creation'
+          Path('experiment/construction_blast_radius/results/RESULT.json').write_text(json.dumps({'decision':'KILL-BENCHMARK','stage':'bounded_execution','error':log[-6000:]},indent=2))
+          PY
+          fi
+          exit 0
+
+      - name: Print decision
+        if: always()
+        run: |
+          cat experiment/construction_blast_radius/results/RESULT.json
+          echo '## Construction blast-radius pilot' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat experiment/construction_blast_radius/results/RESULT.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: construction-blast-radius-results
+          path: |
+            experiment/construction_blast_radius/results
+            external_data/drive_listing.json
+          if-no-files-found: warn
