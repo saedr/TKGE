@@ -103,4 +103,5 @@ jobs:
           path: |
             experiment/construction_blast_radius/results
             external_data/drive_listing.json
+            external_data/archive_listing.txt
           if-no-files-found: warn
